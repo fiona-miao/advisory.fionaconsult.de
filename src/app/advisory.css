@@ -334,8 +334,8 @@ p {
 
 /* INQUIRY */
 .inquiry {
-  background: linear-gradient(rgba(248,250,252,.65),rgba(248,250,252,.65)),
-  url("https://images.unsplash.com/photo-1560169897-fc0cdbdfa4d5?auto=format&fit=crop&w=2200&q=90");
+  background: linear-gradient(rgba(248,250,252,.6),rgba(248,250,252,.6)),
+  url("https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=2200&q=90");
   background-size: cover;
   padding: 100px;
   display: grid;
@@ -397,8 +397,8 @@ p {
 
 /* JOIN */
 #join {
-  background: linear-gradient(rgba(255,255,255,.7),rgba(255,255,255,.7)),
-  url("https://images.unsplash.com/photo-1560169897-fc0cdbdfa4d5?auto=format&fit=crop&w=2200&q=90");
+  background: linear-gradient(rgba(255,255,255,.65),rgba(255,255,255,.65)),
+  url("https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=2200&q=90");
   background-size: cover;
 }
 .join-box {
