@@ -26,5 +26,40 @@
     "email": "linda@test.com",
     "company": "N/A",
     "message": "Testing Zoho SMTP with service@fionaconsult.de"
+  },
+  {
+    "timestamp": "2026-03-17T12:12:54.584Z",
+    "name": "4567",
+    "email": "fiona-miao@outlook.com",
+    "company": "N/A",
+    "message": "4567"
+  },
+  {
+    "timestamp": "2026-03-17T12:16:57.804Z",
+    "name": "Debug Test",
+    "email": "debug@test.com",
+    "company": "N/A",
+    "message": "Testing SMTP debug logging"
+  },
+  {
+    "timestamp": "2026-03-17T12:17:36.888Z",
+    "name": "Linda Debug",
+    "email": "linda@debug.com",
+    "company": "N/A",
+    "message": "Testing email with debug log"
+  },
+  {
+    "timestamp": "2026-03-17T12:18:14.028Z",
+    "name": "Test2",
+    "email": "test2@test.com",
+    "company": "N/A",
+    "message": "Test 2"
+  },
+  {
+    "timestamp": "2026-03-17T12:18:36.582Z",
+    "name": "Test2",
+    "email": "test2@test.com",
+    "company": "N/A",
+    "message": "Test 2"
   }
 ]

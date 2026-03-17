@@ -2,6 +2,18 @@ import nodemailer from 'nodemailer';
 import fs from 'fs';
 import path from 'path';
 
+// 日志记录函数
+function logToFile(message: string) {
+  const logsDir = path.join(process.cwd(), 'public', 'logs');
+  if (!fs.existsSync(logsDir)) {
+    fs.mkdirSync(logsDir, { recursive: true });
+  }
+  const logFile = path.join(logsDir, 'email-debug.log');
+  const timestamp = new Date().toISOString();
+  fs.appendFileSync(logFile, `[${timestamp}] ${message}\n`);
+  console.log(message);
+}
+
 export async function POST(request: Request) {
   try {
     const { name, email, message, company } = await request.json();
@@ -37,15 +49,17 @@ export async function POST(request: Request) {
     existingData.push(contactData);
     fs.writeFileSync(logFile, JSON.stringify(existingData, null, 2));
 
-    console.log('Contact saved:', contactData);
+    logToFile('Contact saved: ' + JSON.stringify(contactData));
 
     // 尝试发送邮件（如果配置了）
     if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
       try {
+        logToFile(`Setting up SMTP for ${process.env.SMTP_HOST}:${process.env.SMTP_PORT} user:${process.env.SMTP_USER}`);
+        
         const transporter = nodemailer.createTransport({
           host: process.env.SMTP_HOST,
           port: parseInt(process.env.SMTP_PORT || '587'),
-          secure: process.env.SMTP_SECURE === 'true',
+          secure: false,
           auth: {
             user: process.env.SMTP_USER,
             pass: process.env.SMTP_PASS
@@ -53,8 +67,8 @@ export async function POST(request: Request) {
           tls: {
             rejectUnauthorized: false
           },
-          connectionTimeout: 3000,
-          socketTimeout: 3000
+          connectionTimeout: 10000,
+          socketTimeout: 10000
         });
 
         const mailOptions = {
@@ -71,11 +85,16 @@ export async function POST(request: Request) {
           `
         };
 
+        logToFile(`Attempting to send email FROM:${mailOptions.from} TO:${mailOptions.to}`);
         const info = await transporter.sendMail(mailOptions);
-        console.log('Email sent:', info.messageId);
+        logToFile(`✅ SUCCESS! Email sent. MessageId: ${info.messageId}`);
       } catch (emailError: any) {
-        console.log('Email service unavailable, but contact saved locally:', emailError.message);
+        logToFile(`❌ ERROR sending email: ${emailError.message}`);
+        if (emailError.code) logToFile(`Code: ${emailError.code}`);
+        if (emailError.responseCode) logToFile(`Response: ${emailError.responseCode} - ${emailError.response}`);
       }
+    } else {
+      logToFile('⚠️  SMTP config missing');
     }
 
     return Response.json(
