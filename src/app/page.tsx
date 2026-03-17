@@ -1,24 +1,27 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import { useState, useEffect } from 'react';
 import './advisory.css';
 
-export default function Home() {
-  const [currentLang, setCurrentLang] = useState('EN');
-  const [isClient, setIsClient] = useState(false);
+export default function ConsultingPage() {
+  const [inquiryForm, setInquiryForm] = useState({
+    subject: '',
+    email: '',
+    message: ''
+  });
+  
+  const [joinForm, setJoinForm] = useState({
+    name: '',
+    email: '',
+    company: '',
+    password: ''
+  });
+
+  const [inquiryStatus, setInquiryStatus] = useState('');
+  const [joinStatus, setJoinStatus] = useState('');
   const [visibleElements, setVisibleElements] = useState<Set<string>>(new Set());
 
-  useEffect(() => {
-    setIsClient(true);
-    // Initialize language from localStorage
-    const savedLang = localStorage.getItem('currentLang') || 'EN';
-    setCurrentLang(savedLang);
-    applyLanguage(savedLang);
-  }, []);
-
-  // Intersection Observer for animations
+  // 用 Intersection Observer 检测元素进入视口
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -37,197 +40,224 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
-  const applyLanguage = (lang: string) => {
-    const elements = document.querySelectorAll('[data-en][data-de]');
-    elements.forEach(el => {
-      const enText = el.getAttribute('data-en');
-      const deText = el.getAttribute('data-de');
-      if (lang === 'EN') {
-        el.textContent = enText;
+  const handleInquirySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setInquiryStatus('sending');
+    
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: inquiryForm.subject,
+          email: inquiryForm.email,
+          message: inquiryForm.message
+        })
+      });
+      
+      if (response.ok) {
+        setInquiryStatus('success');
+        setInquiryForm({ subject: '', email: '', message: '' });
+        setTimeout(() => setInquiryStatus(''), 3000);
       } else {
-        el.textContent = deText;
+        setInquiryStatus('error');
       }
-    });
+    } catch (error) {
+      setInquiryStatus('error');
+    }
+  };
+
+  const handleJoinSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setJoinStatus('sending');
+    
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: joinForm.name,
+          email: joinForm.email,
+          company: joinForm.company,
+          message: `New signup: ${joinForm.company}`
+        })
+      });
+      
+      if (response.ok) {
+        setJoinStatus('success');
+        setJoinForm({ name: '', email: '', company: '', password: '' });
+        setTimeout(() => setJoinStatus(''), 3000);
+      } else {
+        setJoinStatus('error');
+      }
+    } catch (error) {
+      setJoinStatus('error');
+    }
   };
 
   const isVisible = (id: string) => visibleElements.has(id);
 
-  if (!isClient) {
-    return null;
-  }
-
   return (
-    <div className="min-h-screen">
-      <Header />
-      <main className="relative">
-        {/* Hero Section with Image Carousel */}
-        <section className="relative py-24 text-center overflow-hidden" style={{ minHeight: '100vh' }}>
-          {/* Image Carousel Slides */}
-          <div className="hero-slide"></div>
-          <div className="hero-slide"></div>
-          <div className="hero-slide"></div>
-          <div className="hero-slide"></div>
-          <div className="hero-slide"></div>
+    <>
+      
+      <header>
+        <div>
+          <img src="/fionaconsult-logo.png" alt="FionaConsult Logo" className="header-logo" />
+          <a href="#join">Join</a>
+        </div>
+        <div>
+          <a href="#services">Insights</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#inquiry">Feedback</a>
+        </div>
+      </header>
 
-          {/* Hero Content */}
-          <div className="hero-content relative z-10">
-            <h1 className="text-6xl font-bold mb-6 text-white drop-shadow-lg">
-              <span data-en="FIONACONSULT" data-de="FIONACONSULT">FIONACONSULT</span>
-            </h1>
-            <p className="text-2xl text-white drop-shadow-md mb-8 max-w-3xl mx-auto px-4">
-              <span data-en="Independent strategy and operations consulting, supporting organizations with decision-making, execution, and organizational clarity." data-de="Unabhängige Strategie- und Betriebsberatung, die Organisationen bei der Entscheidungsfindung, Umsetzung und organisatorischen Klarheit unterstützt.">
-                Independent strategy and operations consulting, supporting organizations with decision-making, execution, and organizational clarity.
-              </span>
-            </p>
+      <section className="section hero">
+        <div className="slide"></div>
+        <div className="slide"></div>
+        <div className="slide"></div>
+        <div className="slide"></div>
+        <div className="slide"></div>
+
+        <div className="hero-content">
+          <h1>FIONACONSULT</h1>
+          <p>Independent strategy and operations consulting, supporting organizations with decision-making, execution, and organizational clarity.</p>
+        </div>
+      </section>
+
+      <section className="section services" id="services" data-animate>
+        <div className={`services-content ${isVisible('services') ? 'animate-fade-up' : ''}`}>
+          <div data-animate id="services-left">
+            <h2 className={`${isVisible('services-left') ? 'animate-fade-left' : ''}`}>Insights</h2>
+            <p className={`delay-1 ${isVisible('services-left') ? 'animate-fade-left' : ''}`}>We work closely with founders and leadership teams to address complex strategic and operational challenges.</p>
+            <ul>
+              <li className={`delay-2 ${isVisible('services-left') ? 'animate-fade-left' : ''}`}>✓ Business strategy and planning</li>
+              <li className={`delay-3 ${isVisible('services-left') ? 'animate-fade-left' : ''}`}>✓ Operations and process optimization</li>
+              <li className={`delay-4 ${isVisible('services-left') ? 'animate-fade-left' : ''}`}>✓ Market and competitive analysis</li>
+              <li className={`delay-4 ${isVisible('services-left') ? 'animate-fade-left' : ''}`}>✓ Execution and decision support</li>
+            </ul>
           </div>
-        </section>
-
-        {/* Content Container with Semi-transparent Background */}
-        <div className="bg-white bg-opacity-90 py-16">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Services Section */}
-            <section className="mb-20" data-animate id="services">
-              <h2 className={`text-4xl font-bold mb-12 text-gray-800 text-center ${isVisible('services') ? 'animate-fade-up' : ''}`}>
-                <span data-en="How We Help" data-de="Wie wir helfen">How We Help</span>
-              </h2>
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className={`p-8 bg-purple-50 rounded-lg border-2 border-purple-200 shadow-md ${isVisible('services') ? 'animate-fade-left' : ''}`} data-animate id="service-1">
-                  <h3 className="text-2xl font-semibold mb-4 text-purple-700">
-                    <span data-en="Workshop & Strategy" data-de="Workshop & Strategie">Workshop & Strategy</span>
-                  </h3>
-                  <p className="text-gray-700 text-lg">
-                    <span data-en="We work closely with founders and leadership teams to address complex strategic and operational challenges." data-de="Wir arbeiten eng mit Gründern und Führungsteams zusammen, um komplexe strategische und operative Herausforderungen zu bewältigen.">
-                      We work closely with founders and leadership teams to address complex strategic and operational challenges.
-                    </span>
-                  </p>
-                </div>
-                <div className={`p-8 bg-purple-50 rounded-lg border-2 border-purple-200 shadow-md delay-1 ${isVisible('services') ? 'animate-fade-right' : ''}`} data-animate id="service-2">
-                  <h3 className="text-2xl font-semibold mb-4 text-purple-700">
-                    <span data-en="Operations & Execution" data-de="Betrieb & Umsetzung">Operations & Execution</span>
-                  </h3>
-                  <p className="text-gray-700 text-lg">
-                    <span data-en="Focus on business strategy, operations optimization, market analysis, and decision support with practical outcomes." data-de="Konzentration auf Geschäftsstrategie, Betriebsoptimierung, Marktanalyse und Entscheidungsunterstützung mit praktischen Ergebnissen.">
-                      Focus on business strategy, operations optimization, market analysis, and decision support with practical outcomes.
-                    </span>
-                  </p>
-                </div>
-              </div>
-            </section>
-
-            {/* Pricing Section */}
-            <section className="mb-20" data-animate id="pricing">
-              <h2 className={`text-4xl font-bold mb-12 text-gray-800 text-center ${isVisible('pricing') ? 'animate-fade-up' : ''}`}>
-                <span data-en="Pricing" data-de="Preisgestaltung">Pricing</span>
-              </h2>
-              <div className="grid md:grid-cols-3 gap-8">
-                <div className={`p-8 border-3 border-purple-300 rounded-lg bg-white shadow-lg hover:shadow-xl transition-shadow delay-1 ${isVisible('pricing') ? 'animate-scale' : ''}`} data-animate id="pricing-1">
-                  <h3 className="text-2xl font-semibold mb-6 text-gray-800">
-                    <span data-en="Basic" data-de="Basis">Basic</span>
-                  </h3>
-                  <p className="text-4xl font-bold mb-6 text-purple-600">
-                    <span data-en="€5/month" data-de="€5/Monat">€5/month</span>
-                  </p>
-                  <ul className="space-y-3 text-gray-700 mb-8">
-                    <li className="flex items-center"><span className="text-purple-600 font-bold mr-2">✓</span><span data-en="Basic consultation" data-de="Grundlegende Beratung">Basic consultation</span></li>
-                    <li className="flex items-center"><span className="text-purple-600 font-bold mr-2">✓</span><span data-en="Strategy insights" data-de="Strategische Einblicke">Strategy insights</span></li>
-                    <li className="flex items-center"><span className="text-purple-600 font-bold mr-2">✓</span><span data-en="Email support" data-de="E-Mail-Unterstützung">Email support</span></li>
-                  </ul>
-                  <button className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 font-semibold transition-colors">
-                    <span data-en="Get Started" data-de="Jetzt starten">Get Started</span>
-                  </button>
-                </div>
-                <div className={`p-8 border-3 border-purple-600 rounded-lg bg-purple-50 shadow-lg hover:shadow-xl transition-shadow delay-2 ${isVisible('pricing') ? 'animate-scale' : ''}`} data-animate id="pricing-2">
-                  <h3 className="text-2xl font-semibold mb-6 text-gray-800">
-                    <span data-en="Professional" data-de="Professionell">Professional</span>
-                  </h3>
-                  <p className="text-4xl font-bold mb-6 text-purple-600">
-                    <span data-en="€8/month" data-de="€8/Monat">€8/month</span>
-                  </p>
-                  <ul className="space-y-3 text-gray-700 mb-8">
-                    <li className="flex items-center"><span className="text-purple-600 font-bold mr-2">✓</span><span data-en="Professional support" data-de="Professionelle Unterstützung">Professional support</span></li>
-                    <li className="flex items-center"><span className="text-purple-600 font-bold mr-2">✓</span><span data-en="Strategy & planning" data-de="Strategie & Planung">Strategy & planning</span></li>
-                    <li className="flex items-center"><span className="text-purple-600 font-bold mr-2">✓</span><span data-en="Priority response" data-de="Prioritätsantwort">Priority response</span></li>
-                  </ul>
-                  <button className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 font-semibold transition-colors">
-                    <span data-en="Get Started" data-de="Jetzt starten">Get Started</span>
-                  </button>
-                </div>
-                <div className={`p-8 border-3 border-purple-300 rounded-lg bg-white shadow-lg hover:shadow-xl transition-shadow delay-3 ${isVisible('pricing') ? 'animate-scale' : ''}`} data-animate id="pricing-3">
-                  <h3 className="text-2xl font-semibold mb-6 text-gray-800">
-                    <span data-en="Enterprise" data-de="Unternehmen">Enterprise</span>
-                  </h3>
-                  <p className="text-4xl font-bold mb-6 text-purple-600">
-                    <span data-en="€12/month" data-de="€12/Monat">€12/month</span>
-                  </p>
-                  <ul className="space-y-3 text-gray-700 mb-8">
-                    <li className="flex items-center"><span className="text-purple-600 font-bold mr-2">✓</span><span data-en="Full access support" data-de="Vollständiger Zugriff">Full access support</span></li>
-                    <li className="flex items-center"><span className="text-purple-600 font-bold mr-2">✓</span><span data-en="Custom solutions" data-de="Maßgeschneiderte Lösungen">Custom solutions</span></li>
-                    <li className="flex items-center"><span className="text-purple-600 font-bold mr-2">✓</span><span data-en="Dedicated expert" data-de="Dedizierter Experte">Dedicated expert</span></li>
-                  </ul>
-                  <button className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 font-semibold transition-colors">
-                    <span data-en="Contact Us" data-de="Kontaktieren Sie uns">Contact Us</span>
-                  </button>
-                </div>
-              </div>
-            </section>
-
-            {/* Submit an Inquiry Section */}
-            <section className="mb-20 bg-white rounded-lg p-10 shadow-lg" data-animate id="inquiry">
-              <h2 className={`text-4xl font-bold mb-8 text-gray-800 text-center ${isVisible('inquiry') ? 'animate-fade-up' : ''}`}>
-                <span data-en="Submit an Inquiry" data-de="Anfrage senden">Submit an Inquiry</span>
-              </h2>
-              <form className="max-w-2xl mx-auto space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <input 
-                    type="text" 
-                    placeholder="Name"
-                    data-en="Name"
-                    data-de="Name"
-                    className={`p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-600 ${isVisible('inquiry') ? 'animate-fade-left' : ''}`}
-                  />
-                  <input 
-                    type="email" 
-                    placeholder="Email"
-                    data-en="Email"
-                    data-de="E-Mail"
-                    className={`p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-600 delay-1 ${isVisible('inquiry') ? 'animate-fade-right' : ''}`}
-                  />
-                </div>
-                <textarea 
-                  placeholder="Tell us about your challenge..."
-                  data-en="Tell us about your challenge..."
-                  data-de="Erzählen Sie uns von Ihrer Herausforderung..."
-                  rows={5}
-                  className={`w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-600 delay-2 ${isVisible('inquiry') ? 'animate-fade-up' : ''}`}
-                ></textarea>
-                <div className="flex justify-center">
-                  <button type="submit" className={`bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700 font-semibold transition-colors text-lg delay-3 ${isVisible('inquiry') ? 'animate-fade-up' : ''}`}>
-                    <span data-en="Send Inquiry" data-de="Anfrage senden">Send Inquiry</span>
-                  </button>
-                </div>
-              </form>
-            </section>
-
-            {/* Join Our Team Section */}
-            <section className="mb-16 bg-white rounded-lg p-10 shadow-lg" data-animate id="join">
-              <div className="text-center">
-                <h2 className={`text-4xl font-bold mb-6 text-gray-800 ${isVisible('join') ? 'animate-fade-up' : ''}`}>
-                  <span data-en="Join Our Team" data-de="Treten Sie unserem Team bei">Join Our Team</span>
-                </h2>
-                <p className={`text-xl text-gray-700 mb-10 max-w-2xl mx-auto delay-1 ${isVisible('join') ? 'animate-fade-up' : ''}`}>
-                  <span data-en="We are looking for talented consultants to join our team and help organizations achieve their goals." data-de="Wir suchen nach talentierten Beratern, die unserem Team beitreten und Organisationen bei der Erreichung ihrer Ziele unterstützen.">
-                    We are looking for talented consultants to join our team and help organizations achieve their goals.
-                  </span>
-                </p>
-                <button className={`bg-purple-600 text-white px-10 py-4 rounded-lg hover:bg-purple-700 font-semibold transition-colors text-lg delay-2 ${isVisible('join') ? 'animate-fade-up' : ''}`}>
-                  <span data-en="Apply Now" data-de="Jetzt bewerben">Apply Now</span>
-                </button>
-              </div>
-            </section>
+          <div data-animate id="services-right">
+            <p className={`${isVisible('services-right') ? 'animate-fade-right' : ''}`}>Our advisory approach emphasizes clarity, independence, and practical execution.</p>
           </div>
         </div>
-      </main>
-      <Footer />
-    </div>
+      </section>
+
+      <section className="section work" id="work" data-animate>
+        <h2 className={`${isVisible('work') ? 'animate-fade-left' : ''}`}>How We Work</h2>
+        <p className={`delay-1 ${isVisible('work') ? 'animate-fade-left' : ''}`}>Engagements are independent, confidential, and tailored to each client's specific context.</p>
+        <ul>
+          <li className={`delay-2 ${isVisible('work') ? 'animate-fade-left' : ''}`}>✓ Clearly scoped advisory engagements</li>
+          <li className={`delay-3 ${isVisible('work') ? 'animate-fade-left' : ''}`}>✓ Direct collaboration with decision-makers</li>
+          <li className={`delay-4 ${isVisible('work') ? 'animate-fade-left' : ''}`}>✓ Actionable, structured outputs</li>
+          <li className={`delay-4 ${isVisible('work') ? 'animate-fade-left' : ''}`}>✓ Strict confidentiality</li>
+        </ul>
+      </section>
+
+      <section className="section pricing-section" id="pricing" data-animate>
+        <h2 style={{ color: '#f8fafc' }} className={`${isVisible('pricing') ? 'animate-fade-up' : ''}`}>Pricing</h2>
+        <div className="pricing">
+          <div className={`plan delay-1 ${isVisible('pricing') ? 'animate-scale' : ''}`} data-animate>
+            <strong>Basic</strong><br/>
+            €5 / month<br/>
+            General advisory access.
+          </div>
+          <div className={`plan delay-2 ${isVisible('pricing') ? 'animate-scale' : ''}`} data-animate>
+            <strong>Standard</strong><br/>
+            €8 / month<br/>
+            Structured ongoing support.
+          </div>
+          <div className={`plan delay-3 ${isVisible('pricing') ? 'animate-scale' : ''}`} data-animate>
+            <strong>Premium</strong><br/>
+            €12 / month<br/>
+            Priority advisory engagement.
+          </div>
+        </div>
+      </section>
+
+      <section className="inquiry" id="inquiry" data-animate>
+        <div data-animate id="inquiry-left">
+          <h2 className={`${isVisible('inquiry-left') ? 'animate-fade-left' : ''}`}>Submit an inquiry</h2>
+          <p className={`delay-1 ${isVisible('inquiry-left') ? 'animate-fade-left' : ''}`}>We will get back to you within 24–48 hours.</p>
+          <p className={`delay-2 ${isVisible('inquiry-left') ? 'animate-fade-left' : ''}`}>email: <strong>service@fionaconsult.de</strong></p>
+        </div>
+        <form onSubmit={handleInquirySubmit} data-animate id="inquiry-form">
+          <input
+            type="text"
+            placeholder="Subject"
+            value={inquiryForm.subject}
+            onChange={(e) => setInquiryForm({...inquiryForm, subject: e.target.value})}
+            required
+            className={`${isVisible('inquiry-form') ? 'animate-fade-right' : ''}`}
+          />
+          <input
+            type="email"
+            placeholder="Your email"
+            value={inquiryForm.email}
+            onChange={(e) => setInquiryForm({...inquiryForm, email: e.target.value})}
+            required
+            className={`delay-1 ${isVisible('inquiry-form') ? 'animate-fade-right' : ''}`}
+          />
+          <textarea
+            placeholder="Your message"
+            value={inquiryForm.message}
+            onChange={(e) => setInquiryForm({...inquiryForm, message: e.target.value})}
+            required
+            className={`delay-2 ${isVisible('inquiry-form') ? 'animate-fade-right' : ''}`}
+          ></textarea>
+          <button type="submit" disabled={inquiryStatus === 'sending'} className={`delay-3 ${isVisible('inquiry-form') ? 'animate-fade-right' : ''}`}>
+            {inquiryStatus === 'sending' ? '发送中...' : inquiryStatus === 'success' ? '✓ 已发送' : '提交'}
+          </button>
+        </form>
+      </section>
+
+      <section className="section" id="join" data-animate>
+        <div className={`join-box ${isVisible('join') ? 'animate-scale' : ''}`} data-animate id="join">
+          <h2>Join</h2>
+          <form onSubmit={handleJoinSubmit}>
+            <input
+              type="text"
+              placeholder="Full name"
+              value={joinForm.name}
+              onChange={(e) => setJoinForm({...joinForm, name: e.target.value})}
+              required
+              className={`${isVisible('join') ? 'animate-fade-up' : ''}`}
+            />
+            <input
+              type="email"
+              placeholder="Email"
+              value={joinForm.email}
+              onChange={(e) => setJoinForm({...joinForm, email: e.target.value})}
+              required
+              className={`delay-1 ${isVisible('join') ? 'animate-fade-up' : ''}`}
+            />
+            <input
+              type="text"
+              placeholder="Company"
+              value={joinForm.company}
+              onChange={(e) => setJoinForm({...joinForm, company: e.target.value})}
+              required
+              className={`delay-2 ${isVisible('join') ? 'animate-fade-up' : ''}`}
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={joinForm.password}
+              onChange={(e) => setJoinForm({...joinForm, password: e.target.value})}
+              required
+              className={`delay-3 ${isVisible('join') ? 'animate-fade-up' : ''}`}
+            />
+            <button type="submit" disabled={joinStatus === 'sending'} className={`delay-4 ${isVisible('join') ? 'animate-fade-up' : ''}`}>
+              {joinStatus === 'sending' ? '创建中...' : joinStatus === 'success' ? '✓ 已创建' : '创建账户'}
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <footer>
+        © 2026 <strong>FIONACONSULT</strong><br/>
+        email: service@fionaconsult.de
+      </footer>
+    </>
   );
 }
