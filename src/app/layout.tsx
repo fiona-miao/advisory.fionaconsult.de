@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "FIONAMIAO CONSULTING - Strategy & Operations Advisory",
+  title: "FIONACONSULT - Strategy & Operations Advisory",
   description: "Independent strategy and operations consulting supporting organizations with decision-making, execution, and organizational clarity.",
 };
 

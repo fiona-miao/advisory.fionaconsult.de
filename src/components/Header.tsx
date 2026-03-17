@@ -1,20 +1,52 @@
 'use client';
 
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 
 export default function Header() {
+  const [currentLang, setCurrentLang] = useState('EN');
+
+  useEffect(() => {
+    // Initialize language from localStorage
+    const savedLang = localStorage.getItem('currentLang') || 'EN';
+    setCurrentLang(savedLang);
+  }, []);
+
+  const toggleLang = () => {
+    const newLang = currentLang === 'EN' ? 'DE' : 'EN';
+    setCurrentLang(newLang);
+    localStorage.setItem('currentLang', newLang);
+    
+    // Update all elements with data-en and data-de attributes
+    const elements = document.querySelectorAll('[data-en][data-de]');
+    elements.forEach(el => {
+      const enText = el.getAttribute('data-en');
+      const deText = el.getAttribute('data-de');
+      if (newLang === 'EN') {
+        el.textContent = enText;
+      } else {
+        el.textContent = deText;
+      }
+    });
+  };
+
   return (
-    <header className="border-b border-gray-200 bg-white">
+    <header style={{ backgroundColor: 'rgba(128, 0, 128, 0.75)' }}>
       <nav className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-        <Link href="/" className="font-semibold text-xl">
-          FIONAMIAO CONSULTING
-        </Link>
-        <ul className="flex gap-6 items-center text-sm">
-          <li><Link href="/insights" className="hover:text-blue-600">Insights</Link></li>
-          <li><Link href="/pricing" className="hover:text-blue-600">Pricing</Link></li>
-          <li><Link href="/contact" className="hover:text-blue-600">Feedback</Link></li>
-          <li><Link href="/join" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Join</Link></li>
-        </ul>
+        <div className="flex items-center gap-4">
+          <img src="/fionaconsult-logo.png" alt="Logo" style={{ height: '48px' }} />
+          <Link href="/" className="font-semibold text-xl text-white">
+            FIONACONSULT
+          </Link>
+        </div>
+        <div className="flex gap-6 items-center text-sm">
+          <button
+            onClick={toggleLang}
+            className="text-white bg-purple-700 px-3 py-1 rounded hover:bg-purple-900 font-semibold"
+          >
+            {currentLang === 'EN' ? 'DE' : 'EN'}
+          </button>
+        </div>
       </nav>
     </header>
   );
