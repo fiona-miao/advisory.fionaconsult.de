@@ -320,6 +320,10 @@ p {
   grid-template-columns: 1fr 1.2fr;
   gap: 80px;
 }
+.inquiry form {
+  display: flex;
+  flex-direction: column;
+}
 .inquiry input,
 .inquiry textarea {
   margin-bottom: 18px;
@@ -330,12 +334,12 @@ p {
   width: 100%;
   font-family: inherit;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  outline: none;
 }
 .inquiry input:focus,
 .inquiry textarea:focus {
-  outline: none;
   border-color: #1e40af;
-  box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+  box-shadow: 0 0 0 1px #1e40af;
 }
 .inquiry textarea {
   min-height: 140px;
@@ -346,14 +350,19 @@ p {
   font-size: 15px;
   background: #1e40af;
   color: #fff;
-  border: none;
+  border: 2px solid #1e40af;
   border-radius: 4px;
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease;
 }
 .inquiry button:hover {
   background: #1e3a8a;
+  border-color: #1e3a8a;
   transform: translateY(-2px);
+}
+.inquiry button:focus {
+  outline: 2px solid #1e40af;
+  outline-offset: 2px;
 }
 .inquiry button:active {
   transform: translateY(0);

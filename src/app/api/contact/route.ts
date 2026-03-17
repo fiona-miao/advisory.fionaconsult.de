@@ -4,6 +4,19 @@ export async function POST(request: Request) {
   try {
     const { name, email, message, company } = await request.json();
 
+    // 检查环境变量
+    if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      console.error('Missing SMTP configuration:', {
+        host: process.env.SMTP_HOST ? '✓' : '✗',
+        user: process.env.SMTP_USER ? '✓' : '✗',
+        pass: process.env.SMTP_PASS ? '✓' : '✗'
+      });
+      return Response.json(
+        { success: false, error: 'Email server not configured' },
+        { status: 500 }
+      );
+    }
+
     // 配置邮件发送器
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
@@ -30,16 +43,18 @@ export async function POST(request: Request) {
       `
     };
 
+    console.log('Sending email to:', process.env.RECIPIENT_EMAIL);
     const info = await transporter.sendMail(mailOptions);
+    console.log('Email sent successfully:', info.messageId);
     
     return Response.json(
       { success: true, messageId: info.messageId },
       { status: 200 }
     );
-  } catch (error) {
-    console.error('Email sending error:', error);
+  } catch (error: any) {
+    console.error('Email sending error:', error.message, error);
     return Response.json(
-      { success: false, error: 'Failed to send email' },
+      { success: false, error: error.message || 'Failed to send email' },
       { status: 500 }
     );
   }
