@@ -359,10 +359,6 @@ p {
   border-color: #1e3a8a;
   transform: translateY(-2px);
 }
-.inquiry button:focus {
-  outline: 2px solid #1e40af;
-  outline-offset: 2px;
-}
 .inquiry button:active {
   transform: translateY(0);
 }
@@ -394,7 +390,6 @@ p {
 .join-box input:focus {
   outline: none;
   border-color: #1e40af;
-  box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
 }
 .join-box button {
   width: 100%;
