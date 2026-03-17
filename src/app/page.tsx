@@ -166,70 +166,70 @@ export default function ConsultingPage() {  const [currentLang, setCurrentLang] 
 
         <div className="hero-content">
           <h1>FIONACONSULT</h1>
-          <p>Independent strategy and operations consulting, supporting organizations with decision-making, execution, and organizational clarity.</p>
+          <p style={{ fontSize: '1.1rem', lineHeight: '1.6' }}>{getText('Independent strategy and operations consulting, supporting organizations with decision-making, execution, and organizational clarity.', 'Unabhängige Strategie- und Betriebsberatung, die Organisationen bei Entscheidungsfindung, Umsetzung und organisatorischer Klarheit unterstützt.')}</p>
         </div>
       </section>
 
       <section className="section services" id="services" data-animate>
         <div className={`services-content ${isVisible('services') ? 'animate-fade-up' : ''}`}>
           <div data-animate id="services-left">
-            <h2 className={`${isVisible('services-left') ? 'animate-fade-left' : ''}`}>Insights</h2>
-            <p className={`delay-1 ${isVisible('services-left') ? 'animate-fade-left' : ''}`}>We work closely with founders and leadership teams to address complex strategic and operational challenges.</p>
+            <h2 className={`${isVisible('services-left') ? 'animate-fade-left' : ''}`}>{getText('Insights', 'Einblicke')}</h2>
+            <p className={`delay-1 ${isVisible('services-left') ? 'animate-fade-left' : ''}`}>{getText('We work closely with founders and leadership teams to address complex strategic and operational challenges.', 'Wir arbeiten eng mit Gründern und Führungsteams zusammen, um komplexe strategische und betriebliche Herausforderungen zu bewältigen.')}</p>
             <ul>
-              <li className={`delay-2 ${isVisible('services-left') ? 'animate-fade-left' : ''}`}>✓ Business strategy and planning</li>
-              <li className={`delay-3 ${isVisible('services-left') ? 'animate-fade-left' : ''}`}>✓ Operations and process optimization</li>
-              <li className={`delay-4 ${isVisible('services-left') ? 'animate-fade-left' : ''}`}>✓ Market and competitive analysis</li>
-              <li className={`delay-4 ${isVisible('services-left') ? 'animate-fade-left' : ''}`}>✓ Execution and decision support</li>
+              <li className={`delay-2 ${isVisible('services-left') ? 'animate-fade-left' : ''}`}>✓ {getText('Business strategy and planning', 'Geschäftsstrategie und Planung')}</li>
+              <li className={`delay-3 ${isVisible('services-left') ? 'animate-fade-left' : ''}`}>✓ {getText('Operations and process optimization', 'Betrieb und Prozessoptimierung')}</li>
+              <li className={`delay-4 ${isVisible('services-left') ? 'animate-fade-left' : ''}`}>✓ {getText('Market and competitive analysis', 'Markt- und Wettbewerbsanalyse')}</li>
+              <li className={`delay-4 ${isVisible('services-left') ? 'animate-fade-left' : ''}`}>✓ {getText('Execution and decision support', 'Umsetzung und Entscheidungsunterstützung')}</li>
             </ul>
           </div>
           <div data-animate id="services-right">
-            <p className={`${isVisible('services-right') ? 'animate-fade-right' : ''}`}>Our advisory approach emphasizes clarity, independence, and practical execution.</p>
+            <p className={`${isVisible('services-right') ? 'animate-fade-right' : ''}`}>{getText('Our advisory approach emphasizes clarity, independence, and practical execution.', 'Unser Beratungsansatz betont Klarheit, Unabhängigkeit und praktische Umsetzung.')}</p>
           </div>
         </div>
       </section>
 
       <section className="section work" id="work" data-animate>
-        <h2 className={`${isVisible('work') ? 'animate-fade-left' : ''}`}>How We Work</h2>
-        <p className={`delay-1 ${isVisible('work') ? 'animate-fade-left' : ''}`}>Engagements are independent, confidential, and tailored to each client's specific context.</p>
+        <h2 className={`${isVisible('work') ? 'animate-fade-left' : ''}`}>{getText('How We Work', 'Wie wir arbeiten')}</h2>
+        <p className={`delay-1 ${isVisible('work') ? 'animate-fade-left' : ''}`}>{getText('Engagements are independent, confidential, and tailored to each client\'s specific context.', 'Engagements sind unabhängig, vertraulich und auf den spezifischen Kontext jedes Kunden zugeschnitten.')}</p>
         <ul>
-          <li className={`delay-2 ${isVisible('work') ? 'animate-fade-left' : ''}`}>✓ Clearly scoped advisory engagements</li>
-          <li className={`delay-3 ${isVisible('work') ? 'animate-fade-left' : ''}`}>✓ Direct collaboration with decision-makers</li>
-          <li className={`delay-4 ${isVisible('work') ? 'animate-fade-left' : ''}`}>✓ Actionable, structured outputs</li>
-          <li className={`delay-4 ${isVisible('work') ? 'animate-fade-left' : ''}`}>✓ Strict confidentiality</li>
+          <li className={`delay-2 ${isVisible('work') ? 'animate-fade-left' : ''}`}>✓ {getText('Clearly scoped advisory engagements', 'Klar definierte Beratungsengagements')}</li>
+          <li className={`delay-3 ${isVisible('work') ? 'animate-fade-left' : ''}`}>✓ {getText('Direct collaboration with decision-makers', 'Direkte Zusammenarbeit mit Entscheidungsträgern')}</li>
+          <li className={`delay-4 ${isVisible('work') ? 'animate-fade-left' : ''}`}>✓ {getText('Actionable, structured outputs', 'Umsetzbare, strukturierte Ergebnisse')}</li>
+          <li className={`delay-4 ${isVisible('work') ? 'animate-fade-left' : ''}`}>✓ {getText('Strict confidentiality', 'Strikte Vertraulichkeit')}</li>
         </ul>
       </section>
 
       <section className="section pricing-section" id="pricing" data-animate>
-        <h2 style={{ color: '#f8fafc' }} className={`${isVisible('pricing') ? 'animate-fade-up' : ''}`}>Pricing</h2>
+        <h2 style={{ color: '#f8fafc' }} className={`${isVisible('pricing') ? 'animate-fade-up' : ''}`}>{getText('Pricing', 'Preise')}</h2>
         <div className="pricing">
           <div className={`plan delay-1 ${isVisible('pricing') ? 'animate-scale' : ''}`} data-animate>
-            <strong>Basic</strong><br/>
+            <strong>{getText('Basic', 'Basis')}</strong><br/>
             €5 / month<br/>
-            General advisory access.
+            {getText('General advisory access.', 'Allgemeiner Beratungszugriff.')}
           </div>
           <div className={`plan delay-2 ${isVisible('pricing') ? 'animate-scale' : ''}`} data-animate>
-            <strong>Standard</strong><br/>
+            <strong>{getText('Standard', 'Standard')}</strong><br/>
             €8 / month<br/>
-            Structured ongoing support.
+            {getText('Structured ongoing support.', 'Strukturierte Unterstützung laufend.')}
           </div>
           <div className={`plan delay-3 ${isVisible('pricing') ? 'animate-scale' : ''}`} data-animate>
-            <strong>Premium</strong><br/>
+            <strong>{getText('Premium', 'Premium')}</strong><br/>
             €12 / month<br/>
-            Priority advisory engagement.
+            {getText('Priority advisory engagement.', 'Prioritäres Beratungsengagement.')}
           </div>
         </div>
       </section>
 
       <section className="inquiry" id="inquiry" data-animate>
         <div data-animate id="inquiry-left">
-          <h2 className={`${isVisible('inquiry-left') ? 'animate-fade-left' : ''}`}>Submit an inquiry</h2>
-          <p className={`delay-1 ${isVisible('inquiry-left') ? 'animate-fade-left' : ''}`}>We will get back to you within 24–48 hours.</p>
+          <h2 className={`${isVisible('inquiry-left') ? 'animate-fade-left' : ''}`}>{getText('Submit an inquiry', 'Eine Anfrage einreichen')}</h2>
+          <p className={`delay-1 ${isVisible('inquiry-left') ? 'animate-fade-left' : ''}`}>{getText('We will get back to you within 24–48 hours.', 'Wir melden uns innerhalb von 24–48 Stunden bei Ihnen.')}</p>
           <p className={`delay-2 ${isVisible('inquiry-left') ? 'animate-fade-left' : ''}`}>email: <strong>service@fionaconsult.de</strong></p>
         </div>
         <form onSubmit={handleInquirySubmit} data-animate id="inquiry-form">
           <input
             type="text"
-            placeholder="Subject"
+            placeholder={getText('Subject', 'Betreff')}
             value={inquiryForm.subject}
             onChange={(e) => setInquiryForm({...inquiryForm, subject: e.target.value})}
             required
@@ -237,14 +237,14 @@ export default function ConsultingPage() {  const [currentLang, setCurrentLang] 
           />
           <input
             type="email"
-            placeholder="Your email"
+            placeholder={getText('Your email', 'Ihre E-Mail')}
             value={inquiryForm.email}
             onChange={(e) => setInquiryForm({...inquiryForm, email: e.target.value})}
             required
             className={`delay-1 ${isVisible('inquiry-form') ? 'animate-fade-right' : ''}`}
           />
           <textarea
-            placeholder="Your message"
+            placeholder={getText('Your message', 'Ihre Nachricht')}
             value={inquiryForm.message}
             onChange={(e) => setInquiryForm({...inquiryForm, message: e.target.value})}
             required
@@ -258,11 +258,11 @@ export default function ConsultingPage() {  const [currentLang, setCurrentLang] 
 
       <section className="section" id="join" data-animate>
         <div className={`join-box ${isVisible('join') ? 'animate-scale' : ''}`} data-animate id="join">
-          <h2>Join</h2>
+          <h2>{getText('Join', 'Beitreten')}</h2>
           <form onSubmit={handleJoinSubmit}>
             <input
               type="text"
-              placeholder="Full name"
+              placeholder={getText('Full name', 'Vollständiger Name')}
               value={joinForm.name}
               onChange={(e) => setJoinForm({...joinForm, name: e.target.value})}
               required
@@ -270,7 +270,7 @@ export default function ConsultingPage() {  const [currentLang, setCurrentLang] 
             />
             <input
               type="email"
-              placeholder="Email"
+              placeholder={getText('Email', 'E-Mail')}
               value={joinForm.email}
               onChange={(e) => setJoinForm({...joinForm, email: e.target.value})}
               required
@@ -278,7 +278,7 @@ export default function ConsultingPage() {  const [currentLang, setCurrentLang] 
             />
             <input
               type="text"
-              placeholder="Company"
+              placeholder={getText('Company', 'Unternehmen')}
               value={joinForm.company}
               onChange={(e) => setJoinForm({...joinForm, company: e.target.value})}
               required
@@ -286,7 +286,7 @@ export default function ConsultingPage() {  const [currentLang, setCurrentLang] 
             />
             <input
               type="password"
-              placeholder="Password"
+              placeholder={getText('Password', 'Passwort')}
               value={joinForm.password}
               onChange={(e) => setJoinForm({...joinForm, password: e.target.value})}
               required
