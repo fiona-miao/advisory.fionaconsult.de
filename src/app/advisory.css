@@ -2,7 +2,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-weight: 500;
 }
 button,
 input,
@@ -15,6 +16,19 @@ form {
 body {
   color: #0f172a;
   line-height: 1.6;
+  font-weight: 500;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+}
+
+button {
+  font-weight: 600;
+}
+
+strong, b {
+  font-weight: 700;
 }
 a {
   text-decoration: none;
