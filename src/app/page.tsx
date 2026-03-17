@@ -224,7 +224,7 @@ export default function ConsultingPage() {  const [currentLang, setCurrentLang] 
         <div data-animate id="inquiry-left">
           <h2 className={`${isVisible('inquiry-left') ? 'animate-fade-left' : ''}`}>{getText('Submit an inquiry', 'Eine Anfrage einreichen')}</h2>
           <p className={`delay-1 ${isVisible('inquiry-left') ? 'animate-fade-left' : ''}`}>{getText('We will get back to you within 24–48 hours.', 'Wir melden uns innerhalb von 24–48 Stunden bei Ihnen.')}</p>
-          <p className={`delay-2 ${isVisible('inquiry-left') ? 'animate-fade-left' : ''}`}>email: <strong>service@fionaconsult.de</strong></p>
+          <p className={`delay-2 ${isVisible('inquiry-left') ? 'animate-fade-left' : ''}`}>Email: <strong>service@fionaconsult.de</strong></p>
         </div>
         <form onSubmit={handleInquirySubmit} data-animate id="inquiry-form">
           <input
