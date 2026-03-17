@@ -25,8 +25,19 @@ export async function POST(request: Request) {
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS
-      }
+      },
+      tls: {
+        rejectUnauthorized: false
+      },
+      pool: true,
+      maxConnections: 1,
+      maxMessages: 100,
+      rateDelta: 1000,
+      rateLimit: 5
     });
+
+    // 验证连接
+    console.log('Attempting to send email...');
 
     // 发送邮件到你的邮箱
     const mailOptions = {
@@ -43,12 +54,11 @@ export async function POST(request: Request) {
       `
     };
 
-    console.log('Sending email to:', process.env.RECIPIENT_EMAIL);
     const info = await transporter.sendMail(mailOptions);
     console.log('Email sent successfully:', info.messageId);
     
     return Response.json(
-      { success: true, messageId: info.messageId },
+      { success: true, messageId: info.messageId, message: 'Your message has been sent successfully' },
       { status: 200 }
     );
   } catch (error: any) {
