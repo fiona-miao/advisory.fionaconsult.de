@@ -23,10 +23,10 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(128, 0, 128, 0.75);
+  background: rgba(128, 0, 128, 0.5);
   backdrop-filter: blur(10px);
-  box-shadow: 0 2px 8px rgba(128, 0, 128, 0.15);
-  border-bottom: 1px solid rgba(128, 0, 128, 0.2);
+  box-shadow: 0 2px 8px rgba(128, 0, 128, 0.1);
+  border-bottom: 1px solid rgba(128, 0, 128, 0.15);
   animation: slideDown 0.8s ease-out;
 }
 

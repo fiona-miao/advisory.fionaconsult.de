@@ -3,8 +3,7 @@
 import { useState, useEffect } from 'react';
 import './advisory.css';
 
-export default function ConsultingPage() {
-  const [inquiryForm, setInquiryForm] = useState({
+export default function ConsultingPage() {  const [currentLang, setCurrentLang] = useState('EN');  const [inquiryForm, setInquiryForm] = useState({
     subject: '',
     email: '',
     message: ''
@@ -20,6 +19,19 @@ export default function ConsultingPage() {
   const [inquiryStatus, setInquiryStatus] = useState('');
   const [joinStatus, setJoinStatus] = useState('');
   const [visibleElements, setVisibleElements] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    const savedLang = localStorage.getItem('currentLang') || 'EN';
+    setCurrentLang(savedLang);
+  }, []);
+
+  const toggleLang = () => {
+    const newLang = currentLang === 'EN' ? 'DE' : 'EN';
+    setCurrentLang(newLang);
+    localStorage.setItem('currentLang', newLang);
+  };
+
+  const getText = (en: string, de: string) => currentLang === 'EN' ? en : de;
 
   // 用 Intersection Observer 检测元素进入视口
   useEffect(() => {
@@ -103,12 +115,25 @@ export default function ConsultingPage() {
       <header>
         <div>
           <img src="/fionaconsult-logo.png" alt="FionaConsult Logo" className="header-logo" />
-          <a href="#join">Join</a>
+          <a href="#join">{getText('Join', 'Beitreten')}</a>
         </div>
         <div>
-          <a href="#services">Insights</a>
-          <a href="#pricing">Pricing</a>
-          <a href="#inquiry">Feedback</a>
+          <a href="#services">{getText('Insights', 'Einblicke')}</a>
+          <a href="#pricing">{getText('Pricing', 'Preise')}</a>
+          <a href="#inquiry">{getText('Feedback', 'Feedback')}</a>
+          <button onClick={toggleLang} style={{
+            background: 'rgba(255,255,255,0.2)',
+            border: '1px solid rgba(255,255,255,0.3)',
+            color: '#fff',
+            padding: '8px 12px',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '14px',
+            fontWeight: '500',
+            transition: 'all 0.3s ease'
+          }}>
+            {currentLang === 'EN' ? 'DE' : 'EN'}
+          </button>
         </div>
       </header>
 
@@ -206,7 +231,7 @@ export default function ConsultingPage() {
             className={`delay-2 ${isVisible('inquiry-form') ? 'animate-fade-right' : ''}`}
           ></textarea>
           <button type="submit" disabled={inquiryStatus === 'sending'} className={`delay-3 ${isVisible('inquiry-form') ? 'animate-fade-right' : ''}`}>
-            {inquiryStatus === 'sending' ? '发送中...' : inquiryStatus === 'success' ? '✓ 已发送' : '提交'}
+            {inquiryStatus === 'sending' ? getText('Sending...', 'Wird gesendet...') : inquiryStatus === 'success' ? getText('✓ Sent', '✓ Versendet') : getText('Submit', 'Senden')}
           </button>
         </form>
       </section>
@@ -248,7 +273,7 @@ export default function ConsultingPage() {
               className={`delay-3 ${isVisible('join') ? 'animate-fade-up' : ''}`}
             />
             <button type="submit" disabled={joinStatus === 'sending'} className={`delay-4 ${isVisible('join') ? 'animate-fade-up' : ''}`}>
-              {joinStatus === 'sending' ? '创建中...' : joinStatus === 'success' ? '✓ 已创建' : '创建账户'}
+              {joinStatus === 'sending' ? getText('Creating...', 'Wird erstellt...') : joinStatus === 'success' ? getText('✓ Created', '✓ Erstellt') : getText('Create account', 'Konto erstellen')}
             </button>
           </form>
         </div>
