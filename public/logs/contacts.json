@@ -12,5 +12,19 @@
     "email": "linda@fionaconsult.de",
     "company": "N/A",
     "message": "Testing Brevo SMTP with correct password"
+  },
+  {
+    "timestamp": "2026-03-17T11:29:36.044Z",
+    "name": "test",
+    "email": "fiona-miao@outlook.com",
+    "company": "N/A",
+    "message": "test"
+  },
+  {
+    "timestamp": "2026-03-17T12:10:32.353Z",
+    "name": "Linda Test",
+    "email": "linda@test.com",
+    "company": "N/A",
+    "message": "Testing Zoho SMTP with service@fionaconsult.de"
   }
 ]
