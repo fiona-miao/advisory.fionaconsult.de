@@ -3,10 +3,12 @@
 import { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import './advisory.css';
 
 export default function Home() {
   const [currentLang, setCurrentLang] = useState('EN');
   const [isClient, setIsClient] = useState(false);
+  const [visibleElements, setVisibleElements] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     setIsClient(true);
@@ -14,6 +16,25 @@ export default function Home() {
     const savedLang = localStorage.getItem('currentLang') || 'EN';
     setCurrentLang(savedLang);
     applyLanguage(savedLang);
+  }, []);
+
+  // Intersection Observer for animations
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisibleElements((prev) => new Set(prev).add(entry.target.id));
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    const elementsToObserve = document.querySelectorAll('[data-animate]');
+    elementsToObserve.forEach((element) => observer.observe(element));
+
+    return () => observer.disconnect();
   }, []);
 
   const applyLanguage = (lang: string) => {
@@ -29,41 +50,48 @@ export default function Home() {
     });
   };
 
+  const isVisible = (id: string) => visibleElements.has(id);
+
   if (!isClient) {
     return null;
   }
 
   return (
-    <div className="min-h-screen" style={{
-      backgroundImage: 'linear-gradient(rgba(128, 0, 128, 0.3), rgba(128, 0, 128, 0.3)), url("https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=2400&q=90")',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundAttachment: 'fixed'
-    }}>
+    <div className="min-h-screen">
       <Header />
       <main className="relative">
-        {/* Hero Section */}
-        <section className="py-24 text-center">
-          <h1 className="text-6xl font-bold mb-6 text-white drop-shadow-lg">
-            <span data-en="FIONACONSULT" data-de="FIONACONSULT">FIONACONSULT</span>
-          </h1>
-          <p className="text-2xl text-white drop-shadow-md mb-8 max-w-3xl mx-auto px-4">
-            <span data-en="Independent strategy and operations consulting, supporting organizations with decision-making, execution, and organizational clarity." data-de="Unabhängige Strategie- und Betriebsberatung, die Organisationen bei der Entscheidungsfindung, Umsetzung und organisatorischen Klarheit unterstützt.">
-              Independent strategy and operations consulting, supporting organizations with decision-making, execution, and organizational clarity.
-            </span>
-          </p>
+        {/* Hero Section with Image Carousel */}
+        <section className="relative py-24 text-center overflow-hidden" style={{ minHeight: '100vh' }}>
+          {/* Image Carousel Slides */}
+          <div className="hero-slide"></div>
+          <div className="hero-slide"></div>
+          <div className="hero-slide"></div>
+          <div className="hero-slide"></div>
+          <div className="hero-slide"></div>
+
+          {/* Hero Content */}
+          <div className="hero-content relative z-10">
+            <h1 className="text-6xl font-bold mb-6 text-white drop-shadow-lg">
+              <span data-en="FIONACONSULT" data-de="FIONACONSULT">FIONACONSULT</span>
+            </h1>
+            <p className="text-2xl text-white drop-shadow-md mb-8 max-w-3xl mx-auto px-4">
+              <span data-en="Independent strategy and operations consulting, supporting organizations with decision-making, execution, and organizational clarity." data-de="Unabhängige Strategie- und Betriebsberatung, die Organisationen bei der Entscheidungsfindung, Umsetzung und organisatorischen Klarheit unterstützt.">
+                Independent strategy and operations consulting, supporting organizations with decision-making, execution, and organizational clarity.
+              </span>
+            </p>
+          </div>
         </section>
 
         {/* Content Container with Semi-transparent Background */}
         <div className="bg-white bg-opacity-90 py-16">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Services Section */}
-            <section className="mb-20">
-              <h2 className="text-4xl font-bold mb-12 text-gray-800 text-center">
+            <section className="mb-20" data-animate id="services">
+              <h2 className={`text-4xl font-bold mb-12 text-gray-800 text-center ${isVisible('services') ? 'animate-fade-up' : ''}`}>
                 <span data-en="How We Help" data-de="Wie wir helfen">How We Help</span>
               </h2>
               <div className="grid md:grid-cols-2 gap-8">
-                <div className="p-8 bg-purple-50 rounded-lg border-2 border-purple-200 shadow-md">
+                <div className={`p-8 bg-purple-50 rounded-lg border-2 border-purple-200 shadow-md ${isVisible('services') ? 'animate-fade-left' : ''}`} data-animate id="service-1">
                   <h3 className="text-2xl font-semibold mb-4 text-purple-700">
                     <span data-en="Workshop & Strategy" data-de="Workshop & Strategie">Workshop & Strategy</span>
                   </h3>
@@ -73,7 +101,7 @@ export default function Home() {
                     </span>
                   </p>
                 </div>
-                <div className="p-8 bg-purple-50 rounded-lg border-2 border-purple-200 shadow-md">
+                <div className={`p-8 bg-purple-50 rounded-lg border-2 border-purple-200 shadow-md delay-1 ${isVisible('services') ? 'animate-fade-right' : ''}`} data-animate id="service-2">
                   <h3 className="text-2xl font-semibold mb-4 text-purple-700">
                     <span data-en="Operations & Execution" data-de="Betrieb & Umsetzung">Operations & Execution</span>
                   </h3>
@@ -87,12 +115,12 @@ export default function Home() {
             </section>
 
             {/* Pricing Section */}
-            <section className="mb-20">
-              <h2 className="text-4xl font-bold mb-12 text-gray-800 text-center">
+            <section className="mb-20" data-animate id="pricing">
+              <h2 className={`text-4xl font-bold mb-12 text-gray-800 text-center ${isVisible('pricing') ? 'animate-fade-up' : ''}`}>
                 <span data-en="Pricing" data-de="Preisgestaltung">Pricing</span>
               </h2>
               <div className="grid md:grid-cols-3 gap-8">
-                <div className="p-8 border-3 border-purple-300 rounded-lg bg-white shadow-lg hover:shadow-xl transition-shadow">
+                <div className={`p-8 border-3 border-purple-300 rounded-lg bg-white shadow-lg hover:shadow-xl transition-shadow delay-1 ${isVisible('pricing') ? 'animate-scale' : ''}`} data-animate id="pricing-1">
                   <h3 className="text-2xl font-semibold mb-6 text-gray-800">
                     <span data-en="Basic" data-de="Basis">Basic</span>
                   </h3>
@@ -108,7 +136,7 @@ export default function Home() {
                     <span data-en="Get Started" data-de="Jetzt starten">Get Started</span>
                   </button>
                 </div>
-                <div className="p-8 border-3 border-purple-600 rounded-lg bg-purple-50 shadow-lg hover:shadow-xl transition-shadow">
+                <div className={`p-8 border-3 border-purple-600 rounded-lg bg-purple-50 shadow-lg hover:shadow-xl transition-shadow delay-2 ${isVisible('pricing') ? 'animate-scale' : ''}`} data-animate id="pricing-2">
                   <h3 className="text-2xl font-semibold mb-6 text-gray-800">
                     <span data-en="Professional" data-de="Professionell">Professional</span>
                   </h3>
@@ -124,7 +152,7 @@ export default function Home() {
                     <span data-en="Get Started" data-de="Jetzt starten">Get Started</span>
                   </button>
                 </div>
-                <div className="p-8 border-3 border-purple-300 rounded-lg bg-white shadow-lg hover:shadow-xl transition-shadow">
+                <div className={`p-8 border-3 border-purple-300 rounded-lg bg-white shadow-lg hover:shadow-xl transition-shadow delay-3 ${isVisible('pricing') ? 'animate-scale' : ''}`} data-animate id="pricing-3">
                   <h3 className="text-2xl font-semibold mb-6 text-gray-800">
                     <span data-en="Enterprise" data-de="Unternehmen">Enterprise</span>
                   </h3>
@@ -144,8 +172,8 @@ export default function Home() {
             </section>
 
             {/* Submit an Inquiry Section */}
-            <section className="mb-20 bg-white rounded-lg p-10 shadow-lg">
-              <h2 className="text-4xl font-bold mb-8 text-gray-800 text-center">
+            <section className="mb-20 bg-white rounded-lg p-10 shadow-lg" data-animate id="inquiry">
+              <h2 className={`text-4xl font-bold mb-8 text-gray-800 text-center ${isVisible('inquiry') ? 'animate-fade-up' : ''}`}>
                 <span data-en="Submit an Inquiry" data-de="Anfrage senden">Submit an Inquiry</span>
               </h2>
               <form className="max-w-2xl mx-auto space-y-6">
@@ -155,14 +183,14 @@ export default function Home() {
                     placeholder="Name"
                     data-en="Name"
                     data-de="Name"
-                    className="p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-600"
+                    className={`p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-600 ${isVisible('inquiry') ? 'animate-fade-left' : ''}`}
                   />
                   <input 
                     type="email" 
                     placeholder="Email"
                     data-en="Email"
                     data-de="E-Mail"
-                    className="p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-600"
+                    className={`p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-600 delay-1 ${isVisible('inquiry') ? 'animate-fade-right' : ''}`}
                   />
                 </div>
                 <textarea 
@@ -170,10 +198,10 @@ export default function Home() {
                   data-en="Tell us about your challenge..."
                   data-de="Erzählen Sie uns von Ihrer Herausforderung..."
                   rows={5}
-                  className="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-600"
+                  className={`w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-600 delay-2 ${isVisible('inquiry') ? 'animate-fade-up' : ''}`}
                 ></textarea>
                 <div className="flex justify-center">
-                  <button type="submit" className="bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700 font-semibold transition-colors text-lg">
+                  <button type="submit" className={`bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700 font-semibold transition-colors text-lg delay-3 ${isVisible('inquiry') ? 'animate-fade-up' : ''}`}>
                     <span data-en="Send Inquiry" data-de="Anfrage senden">Send Inquiry</span>
                   </button>
                 </div>
@@ -181,17 +209,17 @@ export default function Home() {
             </section>
 
             {/* Join Our Team Section */}
-            <section className="mb-16 bg-white rounded-lg p-10 shadow-lg">
+            <section className="mb-16 bg-white rounded-lg p-10 shadow-lg" data-animate id="join">
               <div className="text-center">
-                <h2 className="text-4xl font-bold mb-6 text-gray-800">
+                <h2 className={`text-4xl font-bold mb-6 text-gray-800 ${isVisible('join') ? 'animate-fade-up' : ''}`}>
                   <span data-en="Join Our Team" data-de="Treten Sie unserem Team bei">Join Our Team</span>
                 </h2>
-                <p className="text-xl text-gray-700 mb-10 max-w-2xl mx-auto">
+                <p className={`text-xl text-gray-700 mb-10 max-w-2xl mx-auto delay-1 ${isVisible('join') ? 'animate-fade-up' : ''}`}>
                   <span data-en="We are looking for talented consultants to join our team and help organizations achieve their goals." data-de="Wir suchen nach talentierten Beratern, die unserem Team beitreten und Organisationen bei der Erreichung ihrer Ziele unterstützen.">
                     We are looking for talented consultants to join our team and help organizations achieve their goals.
                   </span>
                 </p>
-                <button className="bg-purple-600 text-white px-10 py-4 rounded-lg hover:bg-purple-700 font-semibold transition-colors text-lg">
+                <button className={`bg-purple-600 text-white px-10 py-4 rounded-lg hover:bg-purple-700 font-semibold transition-colors text-lg delay-2 ${isVisible('join') ? 'animate-fade-up' : ''}`}>
                   <span data-en="Apply Now" data-de="Jetzt bewerben">Apply Now</span>
                 </button>
               </div>
