@@ -5,5 +5,12 @@
     "email": "test@example.com",
     "company": "N/A",
     "message": "Testing local storage"
+  },
+  {
+    "timestamp": "2026-03-17T11:27:53.538Z",
+    "name": "Linda Test",
+    "email": "linda@fionaconsult.de",
+    "company": "N/A",
+    "message": "Testing Brevo SMTP with correct password"
   }
 ]
