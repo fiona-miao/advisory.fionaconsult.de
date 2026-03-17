@@ -57,6 +57,9 @@ export default function ConsultingPage() {  const [currentLang, setCurrentLang] 
     setInquiryStatus('sending');
     
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+      
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -64,8 +67,11 @@ export default function ConsultingPage() {  const [currentLang, setCurrentLang] 
           name: inquiryForm.subject,
           email: inquiryForm.email,
           message: inquiryForm.message
-        })
+        }),
+        signal: controller.signal
       });
+      
+      clearTimeout(timeoutId);
       
       if (response.ok) {
         setInquiryStatus('success');
@@ -74,8 +80,12 @@ export default function ConsultingPage() {  const [currentLang, setCurrentLang] 
       } else {
         setInquiryStatus('error');
       }
-    } catch (error) {
-      setInquiryStatus('error');
+    } catch (error: any) {
+      if (error.name === 'AbortError') {
+        setInquiryStatus('error');
+      } else {
+        setInquiryStatus('error');
+      }
     }
   };
 
@@ -84,6 +94,9 @@ export default function ConsultingPage() {  const [currentLang, setCurrentLang] 
     setJoinStatus('sending');
     
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+      
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -92,8 +105,11 @@ export default function ConsultingPage() {  const [currentLang, setCurrentLang] 
           email: joinForm.email,
           company: joinForm.company,
           message: `New signup: ${joinForm.company}`
-        })
+        }),
+        signal: controller.signal
       });
+      
+      clearTimeout(timeoutId);
       
       if (response.ok) {
         setJoinStatus('success');
@@ -102,8 +118,12 @@ export default function ConsultingPage() {  const [currentLang, setCurrentLang] 
       } else {
         setJoinStatus('error');
       }
-    } catch (error) {
-      setJoinStatus('error');
+    } catch (error: any) {
+      if (error.name === 'AbortError') {
+        setJoinStatus('error');
+      } else {
+        setJoinStatus('error');
+      }
     }
   };
 
