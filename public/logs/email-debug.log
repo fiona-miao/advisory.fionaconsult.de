@@ -4,3 +4,6 @@
 [2026-03-17T12:18:36.583Z] Contact saved: {"timestamp":"2026-03-17T12:18:36.582Z","name":"Test2","email":"test2@test.com","company":"N/A","message":"Test 2"}
 [2026-03-17T12:18:36.583Z] Setting up SMTP for smtp.zoho.com:587 user:service@fionaconsult.de
 [2026-03-17T12:18:36.583Z] Attempting to send email FROM:service@fionaconsult.de TO:service@fionaconsult.de SUBJECT:New Contact: Test2
+[2026-03-17T14:16:44.480Z] 📁 Contact saved locally: {"timestamp":"2026-03-17T14:16:44.480Z","name":"Linda Brevo Test","email":"linda@test.com","company":"N/A","message":"Testing Brevo API"}
+[2026-03-17T14:16:44.481Z] 📧 Attempting to send email via Brevo API...
+[2026-03-17T14:16:46.429Z] ✅ SUCCESS! Email sent via Brevo. MessageId: <202603171416.98025345702@smtp-relay.mailin.fr>

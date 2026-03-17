@@ -1,4 +1,3 @@
-import nodemailer from 'nodemailer';
 import fs from 'fs';
 import path from 'path';
 
@@ -18,7 +17,7 @@ export async function POST(request: Request) {
   try {
     const { name, email, message, company } = await request.json();
 
-    // 保存到本地文件（临时方案）
+    // 保存到本地文件
     const contactData = {
       timestamp: new Date().toISOString(),
       name,
@@ -49,52 +48,59 @@ export async function POST(request: Request) {
     existingData.push(contactData);
     fs.writeFileSync(logFile, JSON.stringify(existingData, null, 2));
 
-    logToFile('Contact saved: ' + JSON.stringify(contactData));
+    logToFile('📁 Contact saved locally: ' + JSON.stringify(contactData));
 
-    // 尝试发送邮件（如果配置了）
-    if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
+    // 尝试通过 Brevo API 发送邮件
+    if (process.env.BREVO_API_KEY) {
       try {
-        logToFile(`Setting up SMTP for ${process.env.SMTP_HOST}:${process.env.SMTP_PORT} user:${process.env.SMTP_USER}`);
+        logToFile(`📧 Attempting to send email via Brevo API...`);
         
-        const transporter = nodemailer.createTransport({
-          host: process.env.SMTP_HOST,
-          port: parseInt(process.env.SMTP_PORT || '587'),
-          secure: false,
-          auth: {
-            user: process.env.SMTP_USER,
-            pass: process.env.SMTP_PASS
+        const brevoResponse = await fetch('https://api.brevo.com/v3/smtp/email', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'api-key': process.env.BREVO_API_KEY
           },
-          tls: {
-            rejectUnauthorized: false
-          },
-          connectionTimeout: 10000,
-          socketTimeout: 10000
+          body: JSON.stringify({
+            sender: {
+              name: 'FionaConsult Advisory',
+              email: 'service@fionaconsult.de'
+            },
+            to: [
+              {
+                email: process.env.RECIPIENT_EMAIL || 'service@fionaconsult.de',
+                name: 'Service'
+              }
+            ],
+            subject: `New Contact from ${name}`,
+            htmlContent: `
+              <h2>New Contact Form Submission</h2>
+              <p><strong>Name:</strong> ${name}</p>
+              <p><strong>Email:</strong> ${email}</p>
+              ${company ? `<p><strong>Company:</strong> ${company}</p>` : ''}
+              <p><strong>Message:</strong></p>
+              <p>${message.replace(/\n/g, '<br>')}</p>
+            `,
+            replyTo: {
+              email: email,
+              name: name
+            }
+          })
         });
 
-        const mailOptions = {
-          from: process.env.SMTP_FROM || process.env.SMTP_USER,
-          to: process.env.RECIPIENT_EMAIL,
-          subject: `New Contact: ${name}`,
-          html: `
-            <h2>New Contact Form Submission</h2>
-            <p><strong>Name:</strong> ${name}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            ${company ? `<p><strong>Company:</strong> ${company}</p>` : ''}
-            <p><strong>Message:</strong></p>
-            <p>${message.replace(/\n/g, '<br>')}</p>
-          `
-        };
-
-        logToFile(`Attempting to send email FROM:${mailOptions.from} TO:${mailOptions.to}`);
-        const info = await transporter.sendMail(mailOptions);
-        logToFile(`✅ SUCCESS! Email sent. MessageId: ${info.messageId}`);
+        const responseData = await brevoResponse.json();
+        
+        if (brevoResponse.ok) {
+          logToFile(`✅ SUCCESS! Email sent via Brevo. MessageId: ${responseData.messageId}`);
+        } else {
+          logToFile(`❌ Brevo API error: ${brevoResponse.status} - ${JSON.stringify(responseData)}`);
+        }
       } catch (emailError: any) {
-        logToFile(`❌ ERROR sending email: ${emailError.message}`);
-        if (emailError.code) logToFile(`Code: ${emailError.code}`);
-        if (emailError.responseCode) logToFile(`Response: ${emailError.responseCode} - ${emailError.response}`);
+        logToFile(`❌ Error sending via Brevo: ${emailError.message}`);
       }
     } else {
-      logToFile('⚠️  SMTP config missing');
+      logToFile('⚠️  BREVO_API_KEY not configured');
     }
 
     return Response.json(
