@@ -4,34 +4,51 @@ export async function POST(request: Request) {
   try {
     const { name, email, message, company } = await request.json();
 
-    // 检查环境变量
-    if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
-      console.error('Missing SMTP configuration');
+    // 检查环境变量 - 支持 SendGrid 或 SMTP
+    const useSendGrid = process.env.SENDGRID_API_KEY;
+    
+    if (!useSendGrid && (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS)) {
+      console.error('Missing email configuration');
       return Response.json(
-        { success: true, message: 'Message received' },
-        { status: 200 }
+        { success: false, error: 'Email service not configured' },
+        { status: 500 }
       );
     }
 
-    // 配置邮件发送器 - 使用较短的超时
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT || '587'),
-      secure: process.env.SMTP_SECURE === 'true',
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS
-      },
-      tls: {
-        rejectUnauthorized: false
-      },
-      connectionTimeout: 3000,
-      socketTimeout: 3000
-    });
+    let transporter;
+    
+    if (useSendGrid) {
+      // 使用 SendGrid
+      transporter = nodemailer.createTransport({
+        host: 'smtp.sendgrid.net',
+        port: 587,
+        secure: false,
+        auth: {
+          user: 'apikey',
+          pass: process.env.SENDGRID_API_KEY
+        }
+      });
+    } else {
+      // 使用 SMTP（Zoho）
+      transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST,
+        port: parseInt(process.env.SMTP_PORT || '587'),
+        secure: process.env.SMTP_SECURE === 'true',
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASS
+        },
+        tls: {
+          rejectUnauthorized: false
+        },
+        connectionTimeout: 3000,
+        socketTimeout: 3000
+      });
+    }
 
-    // 发送邮件到你的邮箱
+    // 发送邮件
     const mailOptions = {
-      from: process.env.SMTP_FROM || process.env.SMTP_USER,
+      from: process.env.SMTP_FROM || process.env.SMTP_USER || process.env.SENDGRID_FROM_EMAIL,
       to: process.env.RECIPIENT_EMAIL,
       subject: `New Contact: ${name}`,
       html: `
@@ -45,7 +62,7 @@ export async function POST(request: Request) {
     };
 
     try {
-      console.log('Attempting to send email...');
+      console.log('Attempting to send email via', useSendGrid ? 'SendGrid' : 'SMTP');
       const info = await transporter.sendMail(mailOptions);
       console.log('Email sent:', info.messageId);
       return Response.json(
@@ -53,18 +70,18 @@ export async function POST(request: Request) {
         { status: 200 }
       );
     } catch (emailError: any) {
-      // Email failed, but still return success to user
       console.warn('Email sending failed:', emailError.message);
+      // Return error to user this time
       return Response.json(
-        { success: true, message: 'Message received' },
-        { status: 200 }
+        { success: false, error: 'Failed to send email: ' + emailError.message },
+        { status: 500 }
       );
     }
   } catch (error: any) {
     console.error('API error:', error.message);
     return Response.json(
-      { success: true, message: 'Message received' },
-      { status: 200 }
+      { success: false, error: 'Server error' },
+      { status: 500 }
     );
   }
 }
