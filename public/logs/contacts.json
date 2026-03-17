@@ -68,5 +68,12 @@
     "email": "linda@test.com",
     "company": "N/A",
     "message": "Testing Brevo API"
+  },
+  {
+    "timestamp": "2026-03-17T14:42:52.232Z",
+    "name": "ee",
+    "email": "rr@gg.com",
+    "company": "ff",
+    "message": "New signup: ff"
   }
 ]

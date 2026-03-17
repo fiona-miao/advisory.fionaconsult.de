@@ -7,3 +7,6 @@
 [2026-03-17T14:16:44.480Z] 📁 Contact saved locally: {"timestamp":"2026-03-17T14:16:44.480Z","name":"Linda Brevo Test","email":"linda@test.com","company":"N/A","message":"Testing Brevo API"}
 [2026-03-17T14:16:44.481Z] 📧 Attempting to send email via Brevo API...
 [2026-03-17T14:16:46.429Z] ✅ SUCCESS! Email sent via Brevo. MessageId: <202603171416.98025345702@smtp-relay.mailin.fr>
+[2026-03-17T14:42:52.233Z] 📁 Contact saved locally: {"timestamp":"2026-03-17T14:42:52.232Z","name":"ee","email":"rr@gg.com","company":"ff","message":"New signup: ff"}
+[2026-03-17T14:42:52.233Z] 📧 Attempting to send email via Brevo API...
+[2026-03-17T14:42:54.271Z] ✅ SUCCESS! Email sent via Brevo. MessageId: <202603171442.39273319864@smtp-relay.mailin.fr>
