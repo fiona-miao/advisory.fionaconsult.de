@@ -1,0 +1,9 @@
+[
+  {
+    "timestamp": "2026-03-17T11:25:54.523Z",
+    "name": "Test User",
+    "email": "test@example.com",
+    "company": "N/A",
+    "message": "Testing local storage"
+  }
+]
