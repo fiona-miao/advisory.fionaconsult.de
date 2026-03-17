@@ -323,22 +323,27 @@ p {
 .inquiry form {
   display: flex;
   flex-direction: column;
+  border: none !important;
+  outline: none !important;
 }
 .inquiry input,
 .inquiry textarea {
   margin-bottom: 18px;
   padding: 14px;
   font-size: 15px;
-  border: 1px solid #cbd5e1;
+  border: 1px solid #cbd5e1 !important;
   border-radius: 4px;
   width: 100%;
   font-family: inherit;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  outline: none;
+  transition: border-color 0.3s ease;
+  outline: none !important;
+  box-shadow: none !important;
 }
 .inquiry input:focus,
 .inquiry textarea:focus {
-  border-color: #1e40af;
+  border-color: #1e40af !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 .inquiry textarea {
   min-height: 140px;
@@ -349,15 +354,20 @@ p {
   font-size: 15px;
   background: #1e40af;
   color: #fff;
-  border: 2px solid #1e40af;
+  border: none !important;
   border-radius: 4px;
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease;
+  outline: none !important;
+  box-shadow: none !important;
 }
 .inquiry button:hover {
   background: #1e3a8a;
-  border-color: #1e3a8a;
   transform: translateY(-2px);
+}
+.inquiry button:focus {
+  outline: none !important;
+  box-shadow: none !important;
 }
 .inquiry button:active {
   transform: translateY(0);
