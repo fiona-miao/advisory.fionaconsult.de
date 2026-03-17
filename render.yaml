@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: advisory-website
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_DOMAIN
+        value: www.advisory.fionaconsult.de
+    domains:
+      - www.advisory.fionaconsult.de
+      - advisory.fionaconsult.de

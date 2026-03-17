@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FIONAMIAO Consulting - Advisory Website
 
-## Getting Started
+A modern, responsive consulting website built with Next.js, TypeScript, and Tailwind CSS.
 
-First, run the development server:
+**Domain:** www.advisory.fionaconsult.de
+
+## 🚀 Features
+
+- **Responsive Design** - Mobile-first design with Tailwind CSS
+- **Modern Stack** - Next.js 14+, React 18, TypeScript
+- **SEO Optimized** - Metadata configuration for better search rankings
+- **Fast Performance** - Optimized for production with Next.js built-in tools
+- **Contact Forms** - Client-side form handling for inquiries
+- **User Authentication** - Join/Signup page with form validation
+
+## 📄 Pages
+
+- **Home** (/) - Welcome page with services overview
+- **Insights** (/insights) - Detailed services and approach
+- **Pricing** (/pricing) - Subscription plans with custom quotes
+- **Contact** (/contact) - Inquiry form for potential clients
+- **Join** (/join) - User account creation/signup
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 14+ with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Linting**: ESLint
+- **Package Manager**: npm
+
+## 📦 Project Structure
+
+```
+src/
+├── app/
+│   ├── (pages)/           # Route groups for main pages
+│   │   ├── insights/
+│   │   ├── pricing/
+│   │   ├── contact/
+│   │   └── join/
+│   ├── layout.tsx         # Root layout with metadata
+│   ├── page.tsx           # Home page
+│   └── globals.css        # Global styles
+├── components/            # Reusable React components
+│   ├── Header.tsx         # Navigation header
+│   ├── Footer.tsx         # Footer component
+│   └── PricingCard.tsx    # Pricing card component
+└── lib/                   # Utility functions
+```
+
+## 🚀 Getting Started
+
+### Installation
+
+```bash
+npm install
+```
+
+### Development
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Production Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## 🔧 Environment Configuration
 
-To learn more about Next.js, take a look at the following resources:
+For domain configuration, update DNS settings to point `www.advisory.fionaconsult.de` to your hosting provider.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📝 Contact
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Email:** service@fionaconsult.de  
+**Company:** FIONAMIAO CONSULTING
