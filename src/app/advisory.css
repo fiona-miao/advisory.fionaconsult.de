@@ -112,8 +112,17 @@ p {
 }
 
 .slide:nth-child(1) {
+  opacity: 1;
   background-image: linear-gradient(rgba(15,23,42,.45),rgba(255,255,255,.7)),
   url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2400&q=90");
+  animation: slideShowFirst 10s infinite;
+}
+
+@keyframes slideShowFirst {
+  0% { opacity: 1; }
+  40% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 0; }
 }
 .slide:nth-child(2) {
   animation-delay: 2s;
