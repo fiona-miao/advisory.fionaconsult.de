@@ -339,7 +339,6 @@ p {
 .inquiry input:focus,
 .inquiry textarea:focus {
   border-color: #1e40af;
-  box-shadow: 0 0 0 1px #1e40af;
 }
 .inquiry textarea {
   min-height: 140px;
