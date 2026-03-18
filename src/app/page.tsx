@@ -130,7 +130,7 @@ export default function ConsultingPage() {  const [currentLang, setCurrentLang] 
   const isVisible = (id: string) => visibleElements.has(id);
 
   return (
-    <>
+    <div data-lang={currentLang}>
       
       <header>
         <div>
@@ -303,6 +303,6 @@ export default function ConsultingPage() {  const [currentLang, setCurrentLang] 
         © 2026 <strong>FIONACONSULT</strong><br/>
         email: service@fionaconsult.de
       </footer>
-    </>
+    </div>
   );
 }
